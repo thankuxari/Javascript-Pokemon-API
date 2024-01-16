@@ -1,4 +1,5 @@
 const searchBtn = document.getElementById('submit');
+const loading = document.getElementById('js-spinner');
 
 searchBtn.addEventListener('click',fetchData);
 
@@ -6,7 +7,8 @@ async function fetchData(){
     
     try {
         
-
+        loading.classList.remove('hidden');
+        searchBtn.disabled = true;
         //Get user input
         const inputBox = document.getElementById('input-box').value.toLowerCase();
 
@@ -28,16 +30,17 @@ async function fetchData(){
         
         //If Pokemon has over 1 Type then print both of his types or else print only the first type
         if(data.types.length >= 2){
-            console.log('helo there');
             displayData(data.name,data.id,data.types[0].type.name,data.types[1].type.name,data.sprites.front_default);
         }else if(data.types.length < 2){
-            console.log('hello there');
             displayData(data.name,data.id,data.types[0].type.name,undefined,data.sprites.front_default);
         }
 
-        } catch (error) {
-        console.log(error);
-        alert('Failed to fetch the data');
+    } catch (error) {
+    console.log(error);
+    alert('Failed to fetch the data');
+    }finally{
+        searchBtn.disabled = false;
+        loading.classList.add('hidden');
     }
 }
 
